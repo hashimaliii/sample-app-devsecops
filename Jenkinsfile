@@ -7,16 +7,12 @@ pipeline {
 
     environment {
         DOCKER_CREDS = 'docker-hub'
-        DOCKER_IMAGE = 'hashimaliii/sample-app' // Change to your docker username
-        SONAR_TOKEN = credentials('sonar-token')
+        DOCKER_IMAGE = 'hashimaliii/sample-app' 
+        // Note: SONAR_TOKEN is handled by the withSonarQubeEnv block
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', credentialsId: 'github-token', url: 'YOUR_GITHUB_REPO_URL'
-            }
-        }
+        // WE REMOVED THE CHECKOUT STAGE - Jenkins does it automatically!
 
         stage('SonarQube Analysis') {
             steps {
@@ -50,7 +46,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'trivy-scan-results.txt', onlyIfSuccessful: true
+            archiveArtifacts artifacts: 'trivy-scan-results.txt', allowEmptyArchive: true
         }
     }
 }
