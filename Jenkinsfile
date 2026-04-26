@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'jenkins-agent' } 
 
     tools {
         nodejs "node18"
